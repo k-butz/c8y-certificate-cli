@@ -35,9 +35,9 @@ fi
 
 # 2. Create kubernetes secret
 log "Registering .pem files from previous step as Kubernetes secret now ..." 
-# kubectl create secret tls c8y-cloud-tls-secret -n c8yedge \
-#     --cert="c8y-private-key-${DEVICE_ID}" \
-#     --key="c8y-private-key-${DEVICE_ID}"
+kubectl create secret tls c8y-cloud-tls-secret -n c8yedge \
+    --cert="c8y-private-key-${DEVICE_ID}" \
+    --key="c8y-private-key-${DEVICE_ID}"
 log "Created Kubernetes secret 'c8y-cloud-tls-secret'"
 
 # 3. Merge the secret from step 2 into c8y-edge.yaml
@@ -46,7 +46,7 @@ log "Created Kubernetes secret 'c8y-cloud-tls-secret'"
 # Uncomment the proper line that applies to your environment
 # wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64 -O yq
 # wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq
-wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_darwin_arm64 -O yq
+# wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_darwin_arm64 -O yq
 # wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_darwin_amd64 -O yq
 # wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_windows_arm64 -O yq
 # wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_windows_amd64 -O yq
