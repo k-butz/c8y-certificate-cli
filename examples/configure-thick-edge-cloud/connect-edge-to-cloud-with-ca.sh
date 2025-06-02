@@ -36,8 +36,8 @@ fi
 # 2. Create kubernetes secret
 log "Registering .pem files from previous step as Kubernetes secret now ..." 
 kubectl create secret tls c8y-cloud-tls-secret -n c8yedge \
-    --cert="c8y-private-key-${DEVICE_ID}" \
-    --key="c8y-private-key-${DEVICE_ID}"
+    --cert="c8y-certificate-${DEVICE_ID}.pem" \
+    --key="c8y-private-key-${DEVICE_ID}.pem"
 log "Created Kubernetes secret 'c8y-cloud-tls-secret'"
 
 # 3. Merge the secret from step 2 into c8y-edge.yaml
