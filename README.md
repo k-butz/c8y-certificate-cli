@@ -31,4 +31,4 @@ The toool will place `c8y-private-key-{device-id}.pem` and `c8y-certificate-{dev
 
 # Miscellaneous
 
-* The examples folder contains a script that can be used to configure the Cumulocity Edge deployment to use these certificates.
+* The examples folder contains a script that can be used to configure the Cumulocity Edge deployment to use these certificates for Cloud Connectivity
