@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# Configuration
+DEVICE_ID=kb-dev-01 # this is used as name for the cloud-device
+CLOUD_HOST=https://iot.cumulocity.com
+CLOUD_TENANT_ID=t1234
+CLOUD_USER=korbinian.butz@cumulocity.com
+CLOUD_PASSWORD="..."
+
+log(){
+    echo "$(date) - $1"
+}
+
+log "Started script with DEVICE_ID=${DEVICE_ID} CLOUD_HOST=${CLOUD_HOST} CLOUD_TENANT_ID=${CLOUD_TENANT_ID} CLOUD_USER=${CLOUD_USER}"
+
+# 1. Create CSR, register device, retrieve certificate
+# Adapt executable to the one that fits four OS and cpu (e.g. to use ./c8y-get-certificate-from-ca_linux_amd64 instead)
+log "Retrieving certificates from Cloud ..."
+log "Certificate retrieval logs:"
+echo "====================================================================="
+./c8y-get-certificate-from-ca_darwin_arm64 \
+    -device-id "${DEVICE_ID}" \
+    -cumulocity-host "${CLOUD_HOST}" \
+    -cumulocity-tenant-id "${CLOUD_TENANT_ID}" \
+    -cumulocity-user "${CLOUD_USER}" \
+    -cumulocity-password "${CLOUD_PASSWORD}"
+echo "====================================================================="
+
+LAST_EXIT_CODE=$?
+if [ $LAST_EXIT_CODE -gt 0 ] ; then
+    log "Error while retrieving certificate from ${CLOUD_HOST}. Exit code = ${LAST_EXIT_CODE}. For details, have a look at the logs from executable."
+    log "This is a fatal error. Exiting now."
+    exit 1
+fi
+
+# 2. Create kubernetes secret
+log "Registering .pem files from previous step as Kubernetes secret now ..." 
+# kubectl create secret tls c8y-cloud-tls-secret -n c8yedge \
+#     --cert="c8y-private-key-${DEVICE_ID}" \
+#     --key="c8y-private-key-${DEVICE_ID}"
+log "Created Kubernetes secret 'c8y-cloud-tls-secret'"
+
+# 3. Merge the secret from step 2 into c8y-edge.yaml
+# 
+# For below instruction the tooling 'yq' is required (https://github.com/mikefarah/yq), it is a single binary available for different OS and CPU
+# Uncomment the proper line that applies to your environment
+# wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64 -O yq
+# wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq
+wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_darwin_arm64 -O yq
+# wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_darwin_amd64 -O yq
+# wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_windows_arm64 -O yq
+# wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_windows_amd64 -O yq
+# 
+
+chmod +x ./yq
+
+# Send cloud tenant configuration (including secret reference) to a file
+FILE_CONTENT="$(cat <<-EOF
+spec:
+  cloudTenant: 
+    domain: "${CLOUD_HOST}"
+    tlsSecretName: "c8y-cloud-tls-secret"
+EOF
+)"
+YML_CFG_FILE_NAME="cloud-tenant-configuration.yml"
+log "${FILE_CONTENT}" > "${YML_CFG_FILE_NAME}"
+
+# Merge cloud-tenant-configuration into c8yedge.yaml file
+log "Merge cloud-tenant configuration in c8yedge.yaml now ..."
+./yq ". *= load(\"${YML_CFG_FILE_NAME}\")" c8yedge.yaml > c8yedge.with-cloud-secret.yaml
+log "Produced file 'c8yedge.with-cloud-secret.yaml'"
+
+# Cleanup
+log "Cleaning up..."
+rm "./${YML_CFG_FILE_NAME}" 2> /dev/null
+log "Cleanup done. Exiting now."
+
+# Optionally, overwrite existing c8yedge yaml
+# Might be a good idea to back up your original c8yedge.yaml before deleting
+# rm c8yedge.yaml
+# mv c8yedge.with-cloud-secret.yaml c8yedge.yaml
+
+# Now do kubectl apply for the changed in c8yedge.yaml to take effect
