@@ -19,7 +19,7 @@ See [Cumulocity Certificate Authority](https://cumulocity.com/docs/device-certif
 The tool can be used as follows:
 
 ```
-mybinary \
+./c8y-get-certificate-from-ca \
   --device-id 'kobu-device-001' \                   # the associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
   --cumulocity-tenant-id 't12345' \                 # Tenant ID of your Cumulocity Tenant
