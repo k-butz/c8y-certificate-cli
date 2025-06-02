@@ -6,7 +6,7 @@ This project provides a command-line interface to request an x509 certificate fr
 
 Following prerequisites are applying:
 
-* The user nees to have `ROLE_DEVICE_CONTROL_ADMIN` permission in Cumulocity (the permission to register new Devices)
+* The user needs `ROLE_DEVICE_CONTROL_ADMIN` permission in Cumulocity (the permission to register new Devices)
 
 * The Cumulocity-CA feature being enabled in your tenant ([link](https://cumulocity.com/docs/device-certificate-authentication/certificate-authority/#prerequisites))
 
