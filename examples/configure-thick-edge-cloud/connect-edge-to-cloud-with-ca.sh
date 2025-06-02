@@ -14,7 +14,7 @@ log(){
 log "Started script with DEVICE_ID=${DEVICE_ID} CLOUD_HOST=${CLOUD_HOST} CLOUD_TENANT_ID=${CLOUD_TENANT_ID} CLOUD_USER=${CLOUD_USER}"
 
 # 1. Create CSR, register device, retrieve certificate
-# Adapt executable to the one that fits four OS and cpu (e.g. to use ./c8y-get-certificate-from-ca_linux_amd64 instead)
+# Adapt executable to the one that fits your OS and cpu (e.g. to use ./c8y-get-certificate-from-ca_linux_amd64 instead)
 log "Retrieving certificates from Cloud ..."
 log "Certificate retrieval logs:"
 echo "====================================================================="
