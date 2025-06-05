@@ -16,6 +16,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
+	github.com/jessevdk/go-flags v1.6.1
 	github.com/obeattie/ohmyglob v0.0.0-20150811221449-290764208a0d // indirect
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
