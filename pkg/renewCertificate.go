@@ -55,7 +55,7 @@ func (g *CmdGroupRenewCert) Execute(args []string) error {
 		slog.Error("Error while parsing private key. Exiting now.", "error", err)
 		os.Exit(exitCodeGeneralProcessingError)
 	}
-	csr, err := certutil.CreateCertificateSigningRequest(g.DeviceId, key)
+	csr, err := client.DeviceEnrollment.CreateCertificateSigningRequest(g.DeviceId, key)
 	if err != nil {
 		slog.Error("Error while creating certificate signing request. Exiting now.", "error", err)
 		os.Exit(exitCodeGeneralProcessingError)
@@ -76,20 +76,6 @@ func (g *CmdGroupRenewCert) Execute(args []string) error {
 	newCertPEM := certutil.MarshalCertificateToPEM(cert.Raw)
 	if len(string(newCertPEM)) == 0 {
 		slog.Error("Error while converting certificate from []byte to PEM format", "error", "PEM length is 0")
-		os.Exit(exitCodeGeneralProcessingError)
-	}
-	newClientCert, err := tls.X509KeyPair(newCertPEM, keyPem)
-	secondToken, secondTokenResp, err := client.DeviceEnrollment.RequestAccessToken(context.Background(), &newClientCert, nil)
-	if err != nil {
-		slog.Error("Error while sending second access token request. Exiting now.", "error", err)
-		os.Exit(exitCodeGeneralProcessingError)
-	}
-	if len(secondToken.AccessToken) == 0 {
-		slog.Error("Unexpected response code while requesting first access token. Access token lenght is 0. Exiting now.")
-		os.Exit(exitCodeGeneralProcessingError)
-	}
-	if secondTokenResp.Response.StatusCode != 200 {
-		slog.Error("Unexpected response code while requesting second access token. Exiting now.", "expectedStatusCode", 200, "receivedStatusCode", tokenResp.Response.StatusCode)
 		os.Exit(exitCodeGeneralProcessingError)
 	}
 

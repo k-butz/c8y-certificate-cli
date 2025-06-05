@@ -5,7 +5,7 @@ A collection of commands that have been useful for testing/debugging purposes.
 **Certificate lifecycle management**
 
 ```sh
-DEVICE_ID=kb-test-01-cd
+DEVICE_ID=kb_6186834
 ./c8y-get-certificate-from-ca registerUsingPassword \
   --device-id "$DEVICE_ID" \
   --cumulocity-host $C8Y_HOST \
@@ -40,12 +40,12 @@ tedge mqtt pub 'te/device/main///e/login_event' '{
 
 ```sh
 mosquitto_pub \
-    --key ./c8y-private-key-kbx861.pem \
-    --cert ./c8y-certificate-kbx861.pem \
-    --cafile /opt/homebrew/etc/ca-certificates/cert.pem \
+    --key ./c8y-private-key-kb_ux_25195.pem \
+    --cert ./c8y-certificate-kb_ux_25195.pem \
     -h kb.latest.stage.c8y.io -t s/us -p 8883 \
-    -i kbx861  \
+    -i kb_ux_25195  \
     -m '400,c8y_MyEvent,"Something was triggered"' \
+    --cafile /etc/ssl/certs/ca-certificates.crt \
     --debug
 ```
 

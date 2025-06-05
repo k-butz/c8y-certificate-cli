@@ -40,7 +40,7 @@ func (g *CmdGroupEnrollmentPoller) Execute(args []string) error {
 
 	slog.Info("Starting device enrollment", "externalId", g.DeviceId)
 
-	csr, err := certutil.CreateCertificateSigningRequest(g.DeviceId, key)
+	csr, err := client.DeviceEnrollment.CreateCertificateSigningRequest(g.DeviceId, key)
 	if err != nil {
 		slog.Error("Error while creating Certificate signing request. Exiting now.", "error", err)
 		os.Exit(exitCodeGeneralProcessingError)

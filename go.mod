@@ -2,7 +2,7 @@ module github.com/k-butz/c8y-get-certificate-from-ca
 
 go 1.24.3
 
-require github.com/reubenmiller/go-c8y v0.30.0
+require github.com/reubenmiller/go-c8y v0.31.1
 
 require (
 	github.com/mdp/qrterminal/v3 v3.2.1 // indirect

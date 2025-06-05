@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"crypto/tls"
 	"crypto/x509"
 	"encoding/csv"
 	"errors"
@@ -81,7 +80,12 @@ func (g *CmdGroupRegisterUsingPassword) Execute(args []string) error {
 	}
 
 	slog.Info("Creating certificate signing request", "deviceID", deviceID)
-	csr, e := createCertificateSigningRequest(deviceID, key)
+	csr, err := client.DeviceEnrollment.CreateCertificateSigningRequest(g.DeviceId, key)
+	if err != nil {
+		slog.Error("Error while creating Certificate signing request. Exiting now.", "error", err)
+		os.Exit(exitCodeGeneralProcessingError)
+	}
+
 	if e != nil {
 		slog.Error("Error while creating CSR. Exiting now.", "error", e)
 		os.Exit(exitCodeGeneralProcessingError)
@@ -91,20 +95,6 @@ func (g *CmdGroupRegisterUsingPassword) Execute(args []string) error {
 	certPEM, e := enrollDevice(client, deviceID, otp, csr, 5)
 	if e != nil {
 		slog.Error("Error while enrolling device", "error", e)
-		os.Exit(exitCodeGeneralProcessingError)
-	}
-
-	slog.Info("Extracting Private/Public Keypair from PEM")
-	clientCert, e := tls.X509KeyPair(certPEM, keyPem)
-	if e != nil {
-		slog.Error("Error while extracting private/public keypair from PEM. Exiting now.", "deviceID", deviceID, "error", e)
-		os.Exit(exitCodeGeneralProcessingError)
-	}
-
-	// requesting an access token to test if the .pems are working well
-	slog.Info("Request access token for client certificate")
-	if e := verifyPlatformAccessWithCert(client, clientCert); e != nil {
-		slog.Error("Error while getting an access token with provided certificate", "error", e)
 		os.Exit(exitCodeGeneralProcessingError)
 	}
 

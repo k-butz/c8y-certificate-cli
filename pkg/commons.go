@@ -3,13 +3,11 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"crypto/x509"
 	"errors"
 	"fmt"
 	"os"
 
 	"github.com/reubenmiller/go-c8y/pkg/c8y"
-	"github.com/reubenmiller/go-c8y/pkg/certutil"
 )
 
 const fileNameTemplatePrivateKey = "c8y-private-key-%s.pem"
@@ -38,17 +36,6 @@ func readFromFile(fileName string) ([]byte, error) {
 		return nil, err
 	}
 	return b, nil
-}
-
-func createCertificateSigningRequest(deviceID string, key interface{}) (*x509.CertificateRequest, error) {
-	csr, e := certutil.CreateCertificateSigningRequest(deviceID, key)
-	if e != nil {
-		return &x509.CertificateRequest{}, e
-	}
-	if csr.Subject.CommonName != deviceID {
-		return &x509.CertificateRequest{}, errors.New("Common name field of CSR does not match with device id")
-	}
-	return csr, nil
 }
 
 func verifyPlatformAccessWithCert(client *c8y.Client, clientCert tls.Certificate) error {
