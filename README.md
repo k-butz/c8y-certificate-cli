@@ -44,7 +44,7 @@ The tool comes with following sub-commands:
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
   --current-certificate ./c8y-certificate.pem       # Current certificate (which needs to be still valid)
-  --current-certificate ./c8y-private-key.pem       # Associated private key
+  --private-key ./c8y-private-key.pem       # Associated private key
 ```
 
 The tool will place `c8y-private-key-{device-id}.pem` and `c8y-certificate-{device-id}.pem` to your current working directory. The certificate can now be used to communicate with the platform via MQTTS and HTTPS. 
