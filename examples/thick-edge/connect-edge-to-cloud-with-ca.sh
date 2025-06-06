@@ -6,12 +6,22 @@ CLOUD_HOST=https://iot.cumulocity.com
 CLOUD_TENANT_ID=t1234
 CLOUD_USER=korbinian.butz@cumulocity.com
 CLOUD_PASSWORD="..."
+K8S_TLS_SECRET_NAME="c8y-cloud-tls-secret"
 
 log(){
     echo "$(date) - $1"
 }
 
-log "Started script with DEVICE_ID=${DEVICE_ID} CLOUD_HOST=${CLOUD_HOST} CLOUD_TENANT_ID=${CLOUD_TENANT_ID} CLOUD_USER=${CLOUD_USER}"
+log "Started script with DEVICE_ID=${DEVICE_ID} CLOUD_HOST=${CLOUD_HOST} CLOUD_TENANT_ID=${CLOUD_TENANT_ID} CLOUD_USER=${CLOUD_USER} K8S_TLS_SECRET_NAME=${K8S_TLS_SECRET_NAME}"
+
+# Test if required toolings are available. Exit when not.
+test_tooling_available(){
+    if !(command -v $1 &> /dev/null); then
+        log "Required tool \"$1\" is not available. Exiting now."
+        exit 100
+    fi
+}
+test_tooling_available "kubectl"
 
 # 1. Create CSR, register device, retrieve certificate
 # Adapt executable to the one that fits your OS and cpu (e.g. to use ./c8y-get-certificate-from-ca_linux_amd64 instead)
@@ -35,10 +45,10 @@ fi
 
 # 2. Create kubernetes secret
 log "Registering .pem files from previous step as Kubernetes secret now ..." 
-kubectl create secret tls c8y-cloud-tls-secret -n c8yedge \
+kubectl create secret tls ${K8S_TLS_SECRET_NAME} -n c8yedge \
     --cert="c8y-certificate-${DEVICE_ID}.pem" \
     --key="c8y-private-key-${DEVICE_ID}.pem"
-log "Created Kubernetes secret 'c8y-cloud-tls-secret'"
+log "Created Kubernetes secret '${K8S_TLS_SECRET_NAME}'"
 
 # 3. Merge the secret from step 2 into c8y-edge.yaml
 # 
@@ -59,7 +69,7 @@ FILE_CONTENT="$(cat <<-EOF
 spec:
   cloudTenant: 
     domain: "${CLOUD_HOST}"
-    tlsSecretName: "c8y-cloud-tls-secret"
+    tlsSecretName: "${K8S_TLS_SECRET_NAME}"
 EOF
 )"
 YML_CFG_FILE_NAME="cloud-tenant-configuration.yml"
