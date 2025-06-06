@@ -5,7 +5,7 @@ A collection of commands that have been useful for testing/debugging purposes.
 **Certificate lifecycle management**
 
 ```sh
-DEVICE_ID=kb_6186834
+DEVICE_ID=kb_edge_ab128
 ./c8y-get-certificate-from-ca registerUsingPassword \
   --device-id "$DEVICE_ID" \
   --cumulocity-host $C8Y_HOST \

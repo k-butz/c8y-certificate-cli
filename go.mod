@@ -2,7 +2,7 @@ module github.com/k-butz/c8y-get-certificate-from-ca
 
 go 1.24.3
 
-require github.com/reubenmiller/go-c8y v0.31.1
+require github.com/reubenmiller/go-c8y v0.31.2
 
 require (
 	github.com/mdp/qrterminal/v3 v3.2.1 // indirect
@@ -26,6 +26,6 @@ require (
 	go.mozilla.org/pkcs7 v0.9.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/net v0.40.0 // indirect
+	golang.org/x/net v0.41.0 // indirect
 	gopkg.in/tomb.v2 v2.0.0-20161208151619-d5d1b5820637 // indirect
 )
