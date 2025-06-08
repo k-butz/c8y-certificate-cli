@@ -35,7 +35,10 @@ The tool comes with following sub-commands:
 ./c8y-get-certificate-from-ca registerUsingPoller \
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com'    # Platform URL
+  --one-time-password 'secret-token'                # One time password used for registration (optional)
 ```
+
+> In case you specific a one-time-password, make sure it's less than 32 characters and does not contain a double-quote.
 
 * `renewCert`: Command is accepting current certificate and private-key and requests a new certificate with them.
 
@@ -45,6 +48,7 @@ The tool comes with following sub-commands:
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
   --current-certificate ./c8y-certificate.pem \     # File path to certificate
   --private-key ./c8y-private-key.pem               # File path to private key
+  --new-certificate-name ./c8y-certificate.new.pem  # Filename of new certificate
 ```
 
 * `verifyCert`: Command accepts host, certificate and private key and tests if it's valid (by requesting an access token via HTTP). Exit Code 0 if valid, 1 if invalid.
