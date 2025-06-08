@@ -16,7 +16,7 @@ See [Cumulocity Certificate Authority](https://cumulocity.com/docs/device-certif
 
 # Usage
 
-> Tip: For CLI usage you can always use `-h/--help` to see the list of available arguments.
+> Tip: For CLI usage you can always use `-h/--help` to see the list of available options.
 
 The tool comes with following sub-commands:
 
