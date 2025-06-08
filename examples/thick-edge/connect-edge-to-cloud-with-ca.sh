@@ -24,11 +24,11 @@ test_tooling_available(){
 test_tooling_available "kubectl"
 
 # 1. Create CSR, register device, retrieve certificate
-# Adapt executable to the one that fits your OS and cpu (e.g. to use ./c8y-get-certificate-from-ca_linux_amd64 instead)
+# Adapt executable to the one that fits your OS and cpu (e.g. to use ./c8y-certificate-cli_linux_amd64 instead)
 log "Retrieving certificates from Cloud ..."
 log "Certificate retrieval logs:"
 echo "====================================================================="
-./c8y-get-certificate-from-ca_darwin_arm64 \
+./c8y-certificate-cli_darwin_arm64 \
     --device-id "${DEVICE_ID}" \
     --cumulocity-host "${CLOUD_HOST}" \
     --cumulocity-tenant-id "${CLOUD_TENANT_ID}" \
@@ -48,7 +48,7 @@ fi
 
 log "Verify certificate"
 # 2. Just ot be sure, test if certificate is valid 
-./c8y-get-certificate-from-ca verifyCert \
+./c8y-certificate-cli verifyCert \
   -cumulocity-host "${CLOUD_HOST}" \
   --certificate ${cert-file} \
   --private-key ${priv-key-file}

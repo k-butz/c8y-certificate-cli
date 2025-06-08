@@ -1,4 +1,4 @@
-module github.com/k-butz/c8y-get-certificate-from-ca
+module github.com/k-butz/c8y-certificate-cli
 
 go 1.24.3
 

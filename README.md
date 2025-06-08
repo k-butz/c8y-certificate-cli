@@ -1,7 +1,8 @@
 # About
 
 This project provides a command-line interface to interact with Cumulocitys Certificate Authority. 
-The tool is re-using functionality from the go-client provided by [go-c8y](https://github.com/reubenmiller/go-c8y) library.
+
+The tool is using functionality from the go-client provided by [go-c8y](https://github.com/reubenmiller/go-c8y) library.
 
 # Prerequisites
 
@@ -74,4 +75,4 @@ The tool comes with following sub-commands:
 
 # Miscellaneous
 
-* The examples folder contains scripts that can be used to connect a Cumulocity Thick-Edge to a Cloud instance via Cumulocity CA
+* The examples folder contains scripts that can be used to connect a Cumulocity Thick-Edge to a Cloud instance via Cumulocity CA.

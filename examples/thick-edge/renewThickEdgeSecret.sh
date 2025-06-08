@@ -40,7 +40,7 @@ priv-key-file=c8y-private-key-${DEVICE_ID}.pem
 new-cert-file=c8y-certificate-${DEVICE_ID}.new.pem
 
 log "Certificate needs renewal. Requesting a new one..."
-./c8y-get-certificate-from-ca renewCert \
+./c8y-certificate-cli renewCert \
     --device-id "$DEVICE_ID" \
     --cumulocity-host $C8Y_HOST \
     --current-certificate "${cert-file}" \
@@ -55,7 +55,7 @@ if [ $LAST_EXIT_CODE -gt 0 ] ; then
 fi
 
 log "Verify certificate..."
-./c8y-get-certificate-from-ca verifyCert \
+./c8y-certificate-cli verifyCert \
   -cumulocity-host "${CLOUD_HOST}" \
   --certificate ${new-cert-file} \
   --private-key ${priv-key-file}

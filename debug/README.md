@@ -6,7 +6,7 @@ A collection of commands that have been useful for testing/debugging purposes.
 
 ```sh
 DEVICE_ID=kb_edge_ab128
-./c8y-get-certificate-from-ca registerUsingPassword \
+./c8y-certificate-cli registerUsingPassword \
   --device-id "$DEVICE_ID" \
   --cumulocity-host $C8Y_HOST \
   --cumulocity-tenant-id $C8Y_TENANT \
@@ -18,7 +18,7 @@ sudo cp "c8y-certificate-$DEVICE_ID.pem" $(tedge config get 'device.cert_path')
 sudo tedge connect c8y
 
 # renew
-./c8y-get-certificate-from-ca renewCert \
+./c8y-certificate-cli renewCert \
   --device-id "$DEVICE_ID" \
   --cumulocity-host $C8Y_HOST \
   --current-certificate "c8y-certificate-$DEVICE_ID.pem" \
