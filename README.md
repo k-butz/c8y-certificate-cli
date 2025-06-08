@@ -16,6 +16,8 @@ See [Cumulocity Certificate Authority](https://cumulocity.com/docs/device-certif
 
 # Usage
 
+> Tip: For CLI usage you can always use `-h/--help` to see the list of available arguments.
+
 The tool comes with following sub-commands:
 
 * `registerUsingPassword` allowing to provide user-credentials (which will be used for automatic device-registration):
