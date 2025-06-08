@@ -35,7 +35,7 @@ The tool comes with following sub-commands:
 ./c8y-get-certificate-from-ca registerUsingPoller \
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com'    # Platform URL
-  --one-time-password 'secret-token'                # One time password used for registration (optional)
+  --one-time-password 'secret-token'                # Optional one time password used for registration
 ```
 
 > In case you specific a one-time-password, make sure it's less than 32 characters and does not contain a double-quote.
