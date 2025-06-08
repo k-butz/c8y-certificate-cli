@@ -14,7 +14,7 @@ const fileNameTemplatePrivateKey = "c8y-private-key-%s.pem"
 const fileNameTemplateCertificate = "c8y-certificate-%s.pem"
 
 const exitCodePrerequisitesNotFulfilled int = 101
-const exitCodeGeneralProcessingError int = 11
+const exitCodeGeneralProcessingError int = 1
 
 func writeToFile(content string, fileName string) error {
 	f, err := os.Create(fileName)

@@ -24,7 +24,7 @@ The tool comes with following sub-commands:
 * `registerUsingPassword` allowing to provide user-credentials (which will be used for automatic device-registration):
 
 ```
-./c8y-get-certificate-from-ca registerUsingPassword \
+./c8y-certificate-cli registerUsingPassword \
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
   --cumulocity-tenant-id 't12345' \                 # Tenant ID of your Cumulocity Tenant
@@ -35,7 +35,7 @@ The tool comes with following sub-commands:
 * `registerUsingPoller`: This does not require user-credentials for enrollment. Instead, it will periodically poll for registration until a User created a matching Device Registration request in the target tenant.
 
 ```
-./c8y-get-certificate-from-ca registerUsingPoller \
+./c8y-certificate-cli registerUsingPoller \
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com'    # Platform URL
   --one-time-password 'secret-token'                # Optional one time password used for registration
@@ -46,32 +46,32 @@ The tool comes with following sub-commands:
 * `renewCert`: Command is accepting current certificate and private-key and requests a new certificate with them.
 
 ```
-./c8y-get-certificate-from-ca renewCert \
+./c8y-certificate-cli renewCert \
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
   --current-certificate ./c8y-certificate.pem \     # File path to certificate
-  --private-key ./c8y-private-key.pem               # File path to private key
+  --private-key ./c8y-private-key.pem \             # File path to private key
   --new-certificate-name ./c8y-certificate.new.pem  # Filename of new certificate
 ```
 
 * `verifyCert`: Command accepts host, certificate and private key and tests if it's valid (by requesting an access token via HTTP). Exit Code 0 if valid, 1 if invalid.
 
 ```
-./c8y-get-certificate-from-ca verifyCert \
+./c8y-certificate-cli verifyCert \
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
-  --certificate ./c8y-certificate.pem               # File path to certificate
+  --certificate ./c8y-certificate.pem \             # File path to certificate
   --private-key ./c8y-private-key.pem               # File path to private key
 ```
 
 * `getAccessToken`: Command accepts host, certificate and private key and responds with an access token obtained from Cumulocity
 
 ```
-./c8y-get-certificate-from-ca verifyCert \
+./c8y-certificate-cli verifyCert \
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
-  --certificate ./c8y-certificate.pem               # File path to certifictae
+  --certificate ./c8y-certificate.pem \             # File path to certifictae
   --private-key ./c8y-private-key.pem               # Associated private key
 ```
 
 # Miscellaneous
 
-* The examples folder contains a script that can be used to configure the Cumulocity Edge deployment to use these certificates for Cloud Connectivity
+* The examples folder contains scripts that can be used to connect a Cumulocity Thick-Edge to a Cloud instance via Cumulocity CA

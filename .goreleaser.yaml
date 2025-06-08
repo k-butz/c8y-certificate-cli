@@ -6,7 +6,7 @@ before:
     - go generate ./...
 
 builds:
-  - binary: c8y-cert-client
+  - binary: c8y-cert
     main: ./pkg
     env:
       - CGO_ENABLED=0
@@ -19,7 +19,7 @@ builds:
 archives:
   - formats: [tar.gz]
     name_template: >-
-      c8y-certificate-client_
+      c8y-cert_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
       {{- else if eq .Arch "386" }}i386

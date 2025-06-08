@@ -31,6 +31,11 @@ func init() {
 		"Verify certificate",
 		"This command accepts private key and certificate and tests if it's valid (by requesting access token via HTTP)",
 		&verifyCertificateCmdGroup)
+
+	parser.AddCommand(versionCmdName,
+		"Version",
+		"This command tells about the current tool version",
+		&versionCmdGroup)
 }
 
 var parser = flags.NewParser(nil, flags.Default)

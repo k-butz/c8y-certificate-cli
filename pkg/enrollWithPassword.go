@@ -102,7 +102,8 @@ func (g *CmdGroupRegisterUsingPassword) Execute(args []string) error {
 	certFileName := fmt.Sprintf(fileNameTemplateCertificate, deviceID)
 	writeToFile(string(keyPem), privateKeyFileName)
 	writeToFile(string(certPEM), certFileName)
-	slog.Info(fmt.Sprintf("Certificate retrieval succeeded. Placed files '%s' and '%s' in current working directory.", privateKeyFileName, certFileName))
+	slog.Info(fmt.Sprintf("Certificate retrieval succeeded. Placed files '%s' and '%s' in current working directory.",
+		privateKeyFileName, certFileName))
 
 	return nil
 }

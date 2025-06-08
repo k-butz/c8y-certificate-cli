@@ -48,14 +48,6 @@ func (g *CmdGroupGetAccessToken) Execute(args []string) error {
 		os.Exit(exitCodeGeneralProcessingError)
 	}
 	fmt.Println(fmt.Sprintf("Access Token obtained from %s:\n%s", client.BaseURL.Host, token.AccessToken))
-	// c := &http.Client{}
-	// req, err := http.NewRequest(http.MethodGet, g.C8yHost+"/inventory/managedObjects?pageSize=1", nil)
-	// req.Header.Set("Authorization", "Bearer "+token.AccessToken)
-	// res, err := c.Do(req)
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// }
-	// fmt.Println(res.StatusCode)
 
 	return nil
 }
