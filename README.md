@@ -1,6 +1,7 @@
 # About
 
-This project provides a command-line interface to request an x509 certificate from Cumulocity. It is heavily re-using functionality from the go-client provided by [go-c8y](https://github.com/reubenmiller/go-c8y) library.
+This project provides a command-line interface to interact with Cumulocitys Certificate Authority. 
+The tool is re-using functionality from the go-client provided by [go-c8y](https://github.com/reubenmiller/go-c8y) library.
 
 # Prerequisites
 
