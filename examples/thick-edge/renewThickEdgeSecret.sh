@@ -35,21 +35,53 @@ if [$NEEDS_RENEWAL -eq 1]; then
     exit 0
 fi
 
+cert-file=c8y-certificate-${DEVICE_ID}.pem
+priv-key-file=c8y-private-key-${DEVICE_ID}.pem
+new-cert-file=c8y-certificate-${DEVICE_ID}.new.pem
+
 log "Certificate needs renewal. Requesting a new one..."
 ./c8y-get-certificate-from-ca renewCert \
     --device-id "$DEVICE_ID" \
     --cumulocity-host $C8Y_HOST \
-    --current-certificate "c8y-certificate-$DEVICE_ID.pem" \
-    --private-key "c8y-private-key-$DEVICE_ID.pem"
+    --current-certificate "${cert-file}" \
+    --private-key "${priv-key-file}" \
+    --new-certificate-name "${new-cert-file}"
 
-log "Checking renewals exit code ..."
-RENEWAL_EXIT_CODE=$?
-if [$RENEWAL_EXIT_CODE -eq 0]; then
-    log "Received new certificate. Recreating ${K8S_TLS_SECRET_NAME} now ..."
-    kubectl delete secret -n c8yedge $K8S_TLS_SECRET_NAME
-    kubectl create secret tls $TLS_SECRET_NAME -n c8yedge --cert c8y-certificate-$DEVICE_ID.pem --key c8y-private-key-$DEVICE_ID.pem
-    log "Recreated secret"
-else
-    log "Certificate renewal did not succeed. Exit Code was $RENEWAL_EXIT_CODE. Exiting now"
+LAST_EXIT_CODE=$?
+if [ $LAST_EXIT_CODE -gt 0 ] ; then
+    log "Error while requesting new certificate from ${CLOUD_HOST}. Exit code = ${LAST_EXIT_CODE}."
+    log "This is a fatal error. Certificate did not get renewed. Exiting now."
     exit 1
 fi
+
+log "Verify certificate..."
+./c8y-get-certificate-from-ca verifyCert \
+  -cumulocity-host "${CLOUD_HOST}" \
+  --certificate ${new-cert-file} \
+  --private-key ${priv-key-file}
+
+LAST_EXIT_CODE=$?
+if [ $LAST_EXIT_CODE -gt 0 ] ; then
+    log "Error while verifying certificate against ${CLOUD_HOST}. Exit code = ${LAST_EXIT_CODE}."
+    log "This is a fatal error. Certificate did not get renewed. Exiting now."
+    exit 1
+fi
+
+log "Received new and valid certificate. Recreating ${K8S_TLS_SECRET_NAME} now ..."
+kubectl delete secret -n c8yedge $K8S_TLS_SECRET_NAME
+log "Deleted secret $K8S_TLS_SECRET_NAME"
+kubectl create secret tls $TLS_SECRET_NAME -n c8yedge --cert "${new-cert-file}" --key "${priv-key-file}"
+# something went wrong when setting secret
+if [$? -gt 0]; then
+    log "Error while creating kubernetes secret via kubectl (kubectl reporting exit code > 0)"
+    log "This is a fatal error. Certificate did not get renewed. Delete new certificate and exit now."
+    rm ${new-cert-file}
+    exit 1
+fi
+# everything succeeded, now swap new and old certificate and delete old one
+log "Setting Kubernetes secret succeeded. Swapping old- and new certificate now."
+rm ${cert-file}
+mv ${new-cert-file} ${cert-file}
+log "Certificate renewal succeeded"
+
+exit 0

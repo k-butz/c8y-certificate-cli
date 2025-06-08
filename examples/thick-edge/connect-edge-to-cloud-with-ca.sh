@@ -29,12 +29,15 @@ log "Retrieving certificates from Cloud ..."
 log "Certificate retrieval logs:"
 echo "====================================================================="
 ./c8y-get-certificate-from-ca_darwin_arm64 \
-    -device-id "${DEVICE_ID}" \
-    -cumulocity-host "${CLOUD_HOST}" \
-    -cumulocity-tenant-id "${CLOUD_TENANT_ID}" \
-    -cumulocity-user "${CLOUD_USER}" \
-    -cumulocity-password "${CLOUD_PASSWORD}"
+    --device-id "${DEVICE_ID}" \
+    --cumulocity-host "${CLOUD_HOST}" \
+    --cumulocity-tenant-id "${CLOUD_TENANT_ID}" \
+    --cumulocity-user "${CLOUD_USER}" \
+    --cumulocity-password "${CLOUD_PASSWORD}"
 echo "====================================================================="
+
+cert-file=c8y-certificate-${DEVICE_ID}.pem
+priv-key-file=c8y-private-key-${DEVICE_ID}.pem
 
 LAST_EXIT_CODE=$?
 if [ $LAST_EXIT_CODE -gt 0 ] ; then
@@ -43,7 +46,21 @@ if [ $LAST_EXIT_CODE -gt 0 ] ; then
     exit 1
 fi
 
-# 2. Create kubernetes secret
+log "Verify certificate"
+# 2. Just ot be sure, test if certificate is valid 
+./c8y-get-certificate-from-ca verifyCert \
+  -cumulocity-host "${CLOUD_HOST}" \
+  --certificate ${cert-file} \
+  --private-key ${priv-key-file}
+
+LAST_EXIT_CODE=$?
+if [ $LAST_EXIT_CODE -gt 0 ] ; then
+    log "Error while verifying certificate against ${CLOUD_HOST}. Exit code = ${LAST_EXIT_CODE}."
+    log "This is a fatal error. Exiting now."
+    exit 1
+fi
+
+# 3. Create kubernetes secret
 log "Registering .pem files from previous step as Kubernetes secret now ..." 
 kubectl create secret tls ${K8S_TLS_SECRET_NAME} -n c8yedge \
     --cert="c8y-certificate-${DEVICE_ID}.pem" \

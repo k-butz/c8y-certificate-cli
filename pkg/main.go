@@ -26,6 +26,11 @@ func init() {
 		"Get Access Token",
 		"This command accepts private key and certificate and requests an Access Token via Cumulocitys HTTP/REST API",
 		&getAccessTokenCmdGroup)
+
+	parser.AddCommand(verifyCertificateCmdName,
+		"Verify certificate",
+		"This command accepts private key and certificate and tests if it's valid (by requesting access token via HTTP)",
+		&verifyCertificateCmdGroup)
 }
 
 var parser = flags.NewParser(nil, flags.Default)

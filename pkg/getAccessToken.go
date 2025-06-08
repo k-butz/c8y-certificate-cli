@@ -12,8 +12,8 @@ import (
 
 type CmdGroupGetAccessToken struct {
 	C8yHost         string `long:"cumulocity-host" description:"Provide platform endpoint, e.g. 'https://iot.eu-latest.cumulocity.com'" required:"true"`
-	CertificateFile string `long:"certificate-file" description:"File path to your certificate" required:"true"`
-	PrivateKeyFile  string `long:"private-key-file" description:"File path to your private key" required:"true"`
+	CertificateFile string `long:"certificate" description:"File path to your certificate" required:"true"`
+	PrivateKeyFile  string `long:"private-key" description:"File path to your private key" required:"true"`
 }
 
 var getAccessTokenCmdName = "getAccessToken"

@@ -18,7 +18,7 @@ See [Cumulocity Certificate Authority](https://cumulocity.com/docs/device-certif
 
 The tool comes with following sub-commands:
 
-* `registerUsingPassword`: Allowing to provide user-credentials that will be used for automatic device-registration:
+* `registerUsingPassword` allowing to provide user-credentials (which will be used for automatic device-registration):
 
 ```
 ./c8y-get-certificate-from-ca registerUsingPassword \
@@ -34,7 +34,7 @@ The tool comes with following sub-commands:
 ```
 ./c8y-get-certificate-from-ca registerUsingPoller \
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
-  --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
+  --cumulocity-host 'https://iot.cumulocity.com'    # Platform URL
 ```
 
 * `renewCert`: Command is accepting current certificate and private-key and requests a new certificate with them.
@@ -43,11 +43,27 @@ The tool comes with following sub-commands:
 ./c8y-get-certificate-from-ca renewCert \
   --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
-  --current-certificate ./c8y-certificate.pem       # Current certificate (which needs to be still valid)
-  --private-key ./c8y-private-key.pem               # Associated private key
+  --current-certificate ./c8y-certificate.pem \     # File path to certificate
+  --private-key ./c8y-private-key.pem               # File path to private key
 ```
 
-The tool will place `c8y-private-key-{device-id}.pem` and `c8y-certificate-{device-id}.pem` to your current working directory. The certificate can now be used to communicate with the platform via MQTTS and HTTPS. 
+* `verifyCert`: Command accepts host, certificate and private key and tests if it's valid (by requesting an access token via HTTP). Exit Code 0 if valid, 1 if invalid.
+
+```
+./c8y-get-certificate-from-ca verifyCert \
+  --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
+  --certificate ./c8y-certificate.pem               # File path to certificate
+  --private-key ./c8y-private-key.pem               # File path to private key
+```
+
+* `getAccessToken`: Command accepts host, certificate and private key and responds with an access token obtained from Cumulocity
+
+```
+./c8y-get-certificate-from-ca verifyCert \
+  --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
+  --certificate ./c8y-certificate.pem               # File path to certifictae
+  --private-key ./c8y-private-key.pem               # Associated private key
+```
 
 # Miscellaneous
 

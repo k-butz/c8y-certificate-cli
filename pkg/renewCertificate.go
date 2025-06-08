@@ -12,10 +12,11 @@ import (
 )
 
 type CmdGroupRenewCert struct {
-	C8yHost         string `long:"cumulocity-host" description:"Provide platform endpoint, e.g. 'https://iot.eu-latest.cumulocity.com'" required:"true"`
-	DeviceId        string `long:"device-id" description:"The associated device-id from your platform device" required:"true"`
-	CertificateFile string `long:"current-certificate" description:"File path to your certificate pem" required:"true"`
-	PrivateKeyFile  string `long:"private-key" description:"File path to your private key pem" required:"true"`
+	C8yHost            string `long:"cumulocity-host" description:"Provide platform endpoint, e.g. 'https://iot.eu-latest.cumulocity.com'" required:"true"`
+	DeviceId           string `long:"device-id" description:"The associated device-id from your platform device" required:"true"`
+	CertificateFile    string `long:"current-certificate" description:"File path to your certificate pem" required:"true"`
+	PrivateKeyFile     string `long:"private-key" description:"File path to your private key pem" required:"true"`
+	NewCertificateName string `long:"new-certificate-name" description:"Filename of the new certificate" required:"true"`
 }
 
 var renewCertCmdName = "renewCert"
@@ -79,11 +80,10 @@ func (g *CmdGroupRenewCert) Execute(args []string) error {
 		os.Exit(exitCodeGeneralProcessingError)
 	}
 
-	certFileName := fmt.Sprintf(fileNameTemplateCertificate, g.DeviceId+".new")
-	writeToFile(string(newCertPEM), certFileName)
+	writeToFile(string(newCertPEM), g.NewCertificateName)
 
 	slog.Info(fmt.Sprintf("Certificate renewal succeeded. Placed file '%s' in current working directory.",
-		certFileName))
+		g.NewCertificateName))
 
 	return nil
 }
