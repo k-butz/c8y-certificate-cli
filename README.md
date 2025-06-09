@@ -48,7 +48,6 @@ The tool comes with following sub-commands:
 
 ```
 ./c8y-certificate-cli renewCert \
-  --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
   --current-certificate ./c8y-certificate.pem \     # File path to certificate
   --private-key ./c8y-private-key.pem \             # File path to private key

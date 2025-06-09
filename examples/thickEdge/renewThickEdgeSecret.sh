@@ -41,7 +41,6 @@ new-cert-file=c8y-certificate-${DEVICE_ID}.new.pem
 
 log "Certificate needs renewal. Requesting a new one..."
 ./c8y-certificate-cli renewCert \
-    --device-id "$DEVICE_ID" \
     --cumulocity-host $C8Y_HOST \
     --current-certificate "${cert-file}" \
     --private-key "${priv-key-file}" \

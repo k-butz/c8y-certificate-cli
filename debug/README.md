@@ -19,7 +19,6 @@ sudo tedge connect c8y
 
 # renew
 ./c8y-certificate-cli renewCert \
-  --device-id "$DEVICE_ID" \
   --cumulocity-host $C8Y_HOST \
   --current-certificate "c8y-certificate-$DEVICE_ID.pem" \
   --private-key "c8y-private-key-$DEVICE_ID.pem"

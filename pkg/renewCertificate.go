@@ -13,7 +13,6 @@ import (
 
 type CmdGroupRenewCert struct {
 	C8yHost            string `long:"cumulocity-host" description:"Provide platform endpoint, e.g. 'https://iot.eu-latest.cumulocity.com'" required:"true"`
-	DeviceId           string `long:"device-id" description:"The associated device-id from your platform device" required:"true"`
 	CertificateFile    string `long:"current-certificate" description:"File path to your certificate pem" required:"true"`
 	PrivateKeyFile     string `long:"private-key" description:"File path to your private key pem" required:"true"`
 	NewCertificateName string `long:"new-certificate-name" description:"Filename of the new certificate" required:"true"`
@@ -37,6 +36,12 @@ func (g *CmdGroupRenewCert) Execute(args []string) error {
 		os.Exit(exitCodeGeneralProcessingError)
 	}
 	clientCert, err := tls.X509KeyPair(certPEM, keyPem)
+	cn := clientCert.Leaf.Subject.CommonName
+	if len(cn) == 0 {
+		slog.Error("Subject.CommonName could not be found in provided certificate. Exiting now.")
+		os.Exit(exitCodeGeneralProcessingError)
+	}
+	fmt.Println(cn)
 	if err != nil {
 		slog.Error("Error while processing certificate and private key. Exiting now.", "error", err)
 		os.Exit(exitCodeGeneralProcessingError)
@@ -56,7 +61,7 @@ func (g *CmdGroupRenewCert) Execute(args []string) error {
 		slog.Error("Error while parsing private key. Exiting now.", "error", err)
 		os.Exit(exitCodeGeneralProcessingError)
 	}
-	csr, err := client.DeviceEnrollment.CreateCertificateSigningRequest(g.DeviceId, key)
+	csr, err := client.DeviceEnrollment.CreateCertificateSigningRequest(cn, key)
 	if err != nil {
 		slog.Error("Error while creating certificate signing request. Exiting now.", "error", err)
 		os.Exit(exitCodeGeneralProcessingError)
