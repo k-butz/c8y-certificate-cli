@@ -66,7 +66,7 @@ The tool comes with following sub-commands:
 * `getAccessToken`: Command accepts host, certificate and private key and responds with an access token obtained from Cumulocity
 
 ```
-./c8y-certificate-cli verifyCert \
+./c8y-certificate-cli getAccessToken \
   --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
   --certificate ./c8y-certificate.pem \             # File path to certifictae
   --private-key ./c8y-private-key.pem               # Associated private key
