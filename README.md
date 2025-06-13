@@ -26,20 +26,20 @@ The tool comes with following sub-commands:
 
 ```
 ./c8y-certificate-cli registerUsingPassword \
-  --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
-  --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
-  --cumulocity-tenant-id 't12345' \                 # Tenant ID of your Cumulocity Tenant
-  --cumulocity-user 'john.doe' \                    # User for Certificate Request (needs to have ROLE_DEVICE_CONTROL_ADMIN permissson)
-  --cumulocity-password 'superSecret1234'           # User password
+  --device-id 'kobu-device-001' \
+  --cumulocity-host 'https://iot.cumulocity.com' \
+  --cumulocity-tenant-id 't12345' \
+  --cumulocity-user 'john.doe' \
+  --cumulocity-password 'superSecret1234'
 ```
 
 * `registerUsingPoller`: This does not require user-credentials for enrollment. Instead, it will periodically poll for registration until a User created a matching Device Registration request in the target tenant.
 
 ```
 ./c8y-certificate-cli registerUsingPoller \
-  --device-id 'kobu-device-001' \                   # The associated device-identifier in Cumulocity
-  --cumulocity-host 'https://iot.cumulocity.com'    # Platform URL
-  --one-time-password 'secret-token'                # Optional one time password used for registration
+  --device-id 'kobu-device-001' \
+  --cumulocity-host 'https://iot.cumulocity.com'
+  --one-time-password 'secret-token'
 ```
 
 > In case you specific a one-time-password, make sure it's less than 32 characters and does not contain a double-quote.
@@ -48,28 +48,28 @@ The tool comes with following sub-commands:
 
 ```
 ./c8y-certificate-cli renewCert \
-  --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
-  --current-certificate ./c8y-certificate.pem \     # File path to certificate
-  --private-key ./c8y-private-key.pem \             # File path to private key
-  --new-certificate-name ./c8y-certificate.new.pem  # Filename of new certificate
+  --cumulocity-host 'https://iot.cumulocity.com' \
+  --current-certificate ./c8y-certificate.pem \
+  --private-key ./c8y-private-key.pem \
+  --new-certificate-name ./c8y-certificate.new.pem
 ```
 
 * `verifyCert`: Command accepts host, certificate and private key and tests if it's valid (by requesting an access token via HTTP). Exit Code 0 if valid, 1 if invalid.
 
 ```
 ./c8y-certificate-cli verifyCert \
-  --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
-  --certificate ./c8y-certificate.pem \             # File path to certificate
-  --private-key ./c8y-private-key.pem               # File path to private key
+  --cumulocity-host 'https://iot.cumulocity.com' \
+  --certificate ./c8y-certificate.pem \
+  --private-key ./c8y-private-key.pem 
 ```
 
 * `getAccessToken`: Command accepts host, certificate and private key and responds with an access token obtained from Cumulocity
 
 ```
 ./c8y-certificate-cli getAccessToken \
-  --cumulocity-host 'https://iot.cumulocity.com' \  # Platform URL
-  --certificate ./c8y-certificate.pem \             # File path to certifictae
-  --private-key ./c8y-private-key.pem               # Associated private key
+  --cumulocity-host 'https://iot.cumulocity.com' \
+  --certificate ./c8y-certificate.pem \
+  --private-key ./c8y-private-key.pem 
 ```
 
 # Miscellaneous
